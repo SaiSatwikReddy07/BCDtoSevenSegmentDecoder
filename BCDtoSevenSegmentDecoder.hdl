@@ -1,0 +1,33 @@
+CHIP BCDtoSevenSegmentDecoder {
+        IN A, B, C, D;
+        OUT a,b,c,d,e,f,g;
+
+        PARTS:
+        Not(in = A, out = notA);
+        Not(in = B, out = notB);
+        Not(in = C, out = notC);
+        Not(in = D, out = notD);
+		
+		And(a=B,b=D,out=BandD);
+		And(a=notB,b=notD,out=notBandnotD);
+		Or4input(a=A,b=C,c=BandD,d=notBandnotD,out=a);
+		
+		And(a=notC,b=notD,out=notCandnotD);
+		And(a=C,b=D,out=CandD);
+		Or3input(a=notB,b=notCandnotD,c=CandD,out=b);
+		
+		Or3input(a=B,b=notC,c=D,out=c);
+		
+		And(a=C,b=notD,out=CandnotD);
+		And3input(a=B,b=notC,c=D,out=BandnotCandD);
+		And(a=notB,b=C,out=notBandC);
+		Or5input(a=A,b=notBandnotD,c=notBandC,d=CandnotD,e=BandnotCandD,out=d);
+		
+		Or(a=notBandnotD,b=CandnotD,out=e);
+		
+		And(a=B,b=notC,out=BandnotC);
+		And(a=B,b=notD,out=BandnotD);
+		Or4input(a=A,b=notCandnotD,c=BandnotC,d=BandnotD,out=f);
+				
+		Or4input(a=A,b=BandnotC,c=notBandC,d=CandnotD,out=g);
+}
